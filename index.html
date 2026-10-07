@@ -1,60 +1,80 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Fund Me</title>
-  <link rel="stylesheet" href="./style.css" />
-</head>
-<body>
-<main class="card">
-  <header class="card-header">
-    <span class="brand">✦ Fund Me</span>
-    <button id="connectButton" class="button button-outline" type="button">
-      Connect wallet
-    </button>
-  </header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fund Me</title>
+    <link rel="stylesheet" href="./style.css" />
+    <script type="module" defer src="./app.js"></script>
+  </head>
+  <body>
+    <main class="card">
+      <header class="card-header">
+        <span class="brand">✦ Fund Me</span>
+        <button id="connectButton" class="button button-outline" type="button">
+          Connect wallet
+        </button>
+      </header>
 
-  <section aria-labelledby="heading">
-    <p class="eyebrow">A LITTLE SUPPORT. A BIG DIFFERENCE.</p>
-    <h1 id="heading">Make something<br />great happen.</h1>
-    <p class="description">Fund the project with ETH and help bring the next idea to life.</p>
+      <section aria-labelledby="heading">
+        <p class="eyebrow">A LITTLE SUPPORT. A BIG DIFFERENCE.</p>
+        <h1 id="heading">Make something<br />great happen.</h1>
+        <p class="description">
+          Fund the project with ETH and help bring the next idea to life.
+        </p>
 
-    <div class="balance-panel">
-      <span>Contract balance</span>
-      <output id="balance" aria-live="polite">— ETH</output>
-    </div>
-
-    <form id="fundForm">
-      <label for="ethAmount">Amount to fund</label>
-      <div class="fund-row">
-        <div class="input-wrapper">
-          <input
-            id="ethAmount"
-            name="ethAmount"
-            type="number"
-            placeholder="0.01"
-            min="0.000000000000000001"
-            step="any"
-            inputmode="decimal"
-            aria-describedby="amountHint"
-            required
-          />
-          <span aria-hidden="true">ETH</span>
+        <div class="balance-panel">
+          <span>Contract balance</span>
+          <output id="balance" aria-live="polite"><span>—</span> ETH</output>
         </div>
-        <!-- Attach your JavaScript funding handler to this button. -->
-        <button id="fundButton" class="button button-primary" type="button">Fund ↗</button>
-      </div>
-      <p id="amountHint" class="hint">Enter the amount you’d like to contribute.</p>
-    </form>
 
-    <div class="actions">
-      <button id="balanceButton" class="button button-outline" type="button">getBalance</button>
-      <button id="withdrawButton" class="button button-outline" type="button">Withdraw</button>
-    </div>
-  </section>
+        <form id="fundForm">
+          <label for="ethAmount">Amount to fund</label>
+          <div class="fund-row">
+            <div class="input-wrapper">
+              <input
+                id="ethAmount"
+                name="ethAmount"
+                type="number"
+                placeholder="0.01"
+                min="0.000000000000000001"
+                step="any"
+                inputmode="decimal"
+                aria-describedby="amountHint"
+                required
+              />
+              <span aria-hidden="true">ETH</span>
+            </div>
+            <button id="fundButton" class="button button-primary" type="button">
+              Fund ↗
+            </button>
+          </div>
+          <p id="amountHint" class="hint">
+            Enter the amount you’d like to contribute.
+          </p>
+        </form>
 
-  <footer><p>HTML &amp; CSS demo · Wallet actions require JavaScript.</p><p>Mr. Geex</p></footer>
-</main>
-</body>
+        <div class="actions">
+          <button
+            id="balanceButton"
+            class="button button-outline"
+            type="button"
+          >
+            getBalance
+          </button>
+          <button
+            id="withdrawButton"
+            class="button button-outline"
+            type="button"
+          >
+            Withdraw
+          </button>
+        </div>
+      </section>
+
+      <footer>
+        <p>Mr. Geex</p>
+      </footer>
+    </main>
+  </body>
 </html>
