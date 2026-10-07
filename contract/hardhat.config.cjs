@@ -1,0 +1,45 @@
+require("@nomicfoundation/hardhat-toolbox");
+require("hardhat-deploy");
+require("hardhat-deploy-ethers");
+require("hardhat-gas-reporter");
+require("dotenv").config();
+
+/** @type import('hardhat/config').HardhatUserConfig */
+module.exports = {
+  solidity: {
+    compilers: [{ version: "0.8.7" }, { version: "0.6.6" }],
+  },
+  gasReporter: {
+    enabled: false,
+    outputFile: "gasReport.txt",
+    noColors: true,
+    currency: "USD",
+    coinmarketcap: process.env.COINTMARKETCAP_API_KEY,
+    etherscan: process.env.ETHERSCAN_API_KEY,
+    token: "ETH",
+  },
+  etherscan: {
+    apiKey: process.env.ETHERSCAN_API_KEY,
+  },
+  defaultNetwork: "hardhat",
+  networks: {
+    hardhat: {
+      chainId: 31337,
+      // gasPrice: 130000000000,
+    },
+    localhost: {
+      url: "http://127.0.0.1:8545/",
+    },
+    sepolia: {
+      url: process.env.SEPOLIA_RPC_URL,
+      accounts: [process.env.SEPOLIA_PRIVATE_KEY],
+      chainId: 11155111,
+      blockConfirmations: 6,
+    },
+  },
+  namedAccounts: {
+    deployer: {
+      default: 0,
+    },
+  },
+};
