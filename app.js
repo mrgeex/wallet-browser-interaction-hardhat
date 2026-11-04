@@ -35,6 +35,29 @@ async function fund() {
     console.error(error);
   }
 }
+
+async function getBalance() {
+  try {
+    // provider
+    if (!provider) await setMetaMask();
+    const _provider = new ethers.BrowserProvider(provider);
+    // singer
+    const _singer = await _provider.getSigner();
+    // contract (address & abi)
+    const contract = new ethers.Contract(
+      FundMeDeployment.address,
+      FundMeDeployment.abi,
+      _singer,
+    );
+    const contractBalance = await _provider.getBalance(
+      FundMeDeployment.address,
+    );
+
+    currentBalance.textContent = ethers.formatEther(contractBalance);
+  } catch (error) {
+    console.error(error);
+  }
+}
 function setMetaMask() {
   return new Promise((resolve, reject) => {
     function handleAccounce(event) {
@@ -95,3 +118,4 @@ connectBtn.addEventListener("click", async () => {
 });
 
 fundBtn.addEventListener("click", fund);
+getBalanceBtn.addEventListener("click", getBalance);
