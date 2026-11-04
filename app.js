@@ -40,25 +40,24 @@ function setMetaMask() {
     function handleAccounce(event) {
       const { info, provider: walletProvider } = event.detail;
 
-      if (info.rdns === "io.metamask") {
-        console.log("MetaMask detected");
-        provider = walletProvider;
+      if (info.rdns !== "io.metamask" || !walletProvider) return;
+      console.log("MetaMask detected");
+      provider = walletProvider;
 
-        window.removeEventListener("eip6963:announceProvider", handleAccounce);
-        clearTimeout(timeoutID);
+      window.removeEventListener("eip6963:announceProvider", handleAccounce);
+      clearTimeout(timeoutID);
 
-        resolve(provider);
-      }
+      resolve(provider);
     }
 
     window.addEventListener("eip6963:announceProvider", handleAccounce);
-
-    window.dispatchEvent(new Event("eip6963:requestProvider"));
 
     const timeoutID = setTimeout(() => {
       window.removeEventListener("eip6963:announceProvider", handleAccounce);
       reject(new Error("MetaMask not found"));
     }, 3000);
+
+    window.dispatchEvent(new Event("eip6963:requestProvider"));
   });
 }
 
