@@ -1,6 +1,7 @@
 "use strict";
 
-import { ethers } from "https://cdn.jsdelivr.net/npm/ethers@6.15.0/+esm";
+import * as ethers from "./ethers.min.js";
+import FundMeDeployment from "./contract/deployments/localhost/FundMe.json" with { type: "json" };
 
 let provider, walletAddress;
 
@@ -12,6 +13,28 @@ const fundBtn = document.getElementById("fundButton");
 const getBalanceBtn = document.getElementById("balanceButton");
 const withdrawBtn = document.getElementById("withdrawButton");
 
+async function fund() {
+  try {
+    // provider
+    if (!provider) await setMetaMask();
+    const _provider = new ethers.BrowserProvider(provider);
+    // singer
+    const _singer = await _provider.getSigner();
+    // contract (address & abi)
+    const contract = new ethers.Contract(
+      FundMeDeployment.address,
+      FundMeDeployment.abi,
+      _singer,
+    );
+
+    console.log(`Funding ${fundAmount.value}...`);
+    const txResponse = await contract.fund({
+      value: ethers.parseEther(fundAmount.value.toString()),
+    });
+  } catch (error) {
+    console.error(error);
+  }
+}
 function setMetaMask() {
   return new Promise((resolve, reject) => {
     function handleAccounce(event) {
@@ -71,3 +94,5 @@ connectBtn.addEventListener("click", async () => {
     alert(error);
   }
 });
+
+fundBtn.addEventListener("click", fund);
