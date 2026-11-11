@@ -23,6 +23,8 @@ contract FundMe {
     address private immutable i_owner;
     AggregatorV3Interface private s_priceFeed;
 
+    event FundSuccess(address funder, uint256 fundValue);
+
     modifier onlyOwner() {
         // require(msg.sender == i_owner, "sender is not owner!");
         if (msg.sender != i_owner) revert FundMe__NotOwner();
@@ -38,8 +40,11 @@ contract FundMe {
         // require(msg.value.getConversionRate() >= MIN_USD, "Didn't send enough!");
         if (msg.value.getConversionRate(s_priceFeed) < MIN_USD)
             revert FundMe__NotSentEnough();
+
         s_funders.push(msg.sender);
         s_addressToAmountFunded[msg.sender] += msg.value;
+
+        emit FundSuccess(msg.sender, msg.value);
     }
 
     function withdraw() public onlyOwner {
