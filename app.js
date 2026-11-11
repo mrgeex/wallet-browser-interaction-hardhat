@@ -61,6 +61,32 @@ async function getBalance() {
     console.error(error);
   }
 }
+
+async function withdraw() {
+  withdrawBtn.textContent = "Withdrawing...";
+  try {
+    if (!provider) await setMetaMask();
+    const _provider = new ethers.BrowserProvider(provider);
+    const _singer = await _provider.getSigner();
+    const contract = new ethers.Contract(
+      FundMeDeployment.address,
+      FundMeDeployment.abi,
+      _singer,
+    );
+
+    contract.once("WithdrawSuccess", async (withdrawnAmount) => {
+      console.log(`Withdrawing ${ethers.formatEther(withdrawnAmount)} ETH...`);
+      alert(`Successfully withdrawn!`);
+      await getBalance();
+    });
+    const tx = await contract.withdraw();
+  } catch (error) {
+    console.error(error);
+    alert(error);
+  }
+  withdrawBtn.textContent = "Withdraw";
+}
+
 function setMetaMask() {
   return new Promise((resolve, reject) => {
     function handleAccounce(event) {
@@ -122,3 +148,4 @@ connectBtn.addEventListener("click", async () => {
 
 fundBtn.addEventListener("click", fund);
 getBalanceBtn.addEventListener("click", getBalance);
+withdrawBtn.addEventListener("click", withdraw);
