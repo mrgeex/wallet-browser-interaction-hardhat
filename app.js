@@ -15,12 +15,9 @@ const withdrawBtn = document.getElementById("withdrawButton");
 
 async function fund() {
   try {
-    // provider
     if (!provider) await setMetaMask();
     const _provider = new ethers.BrowserProvider(provider);
-    // singer
     const _singer = await _provider.getSigner();
-    // contract (address & abi)
     const contract = new ethers.Contract(
       FundMeDeployment.address,
       FundMeDeployment.abi,
@@ -28,7 +25,8 @@ async function fund() {
     );
 
     console.log(`Funding ${fundAmount.value}...`);
-    const txResponse = await contract.fund({
+
+    const tx = await contract.fund({
       value: ethers.parseEther(fundAmount.value.toString()),
     });
   } catch (error) {
@@ -38,12 +36,9 @@ async function fund() {
 
 async function getBalance() {
   try {
-    // provider
     if (!provider) await setMetaMask();
     const _provider = new ethers.BrowserProvider(provider);
-    // singer
     const _singer = await _provider.getSigner();
-    // contract (address & abi)
     const contract = new ethers.Contract(
       FundMeDeployment.address,
       FundMeDeployment.abi,
