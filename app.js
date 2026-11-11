@@ -14,6 +14,8 @@ const getBalanceBtn = document.getElementById("balanceButton");
 const withdrawBtn = document.getElementById("withdrawButton");
 
 async function fund() {
+  fundBtn.textContent = "Funding...";
+  fundBtn.disabled = true;
   try {
     if (!provider) await setMetaMask();
     const _provider = new ethers.BrowserProvider(provider);
@@ -31,8 +33,10 @@ async function fund() {
     });
 
     contract.once("FundSuccess", async (funder, fundValue) => {
-      console.log(fundValue);
+      console.log(ethers.formatEther(fundValue));
       alert(`Successfully funded!`);
+
+      fundAmount.value = "";
       await getBalance();
     });
 
@@ -40,18 +44,13 @@ async function fund() {
   } catch (error) {
     console.error(error);
   }
+  fundBtn.textContent = "Fund ↗";
 }
 
 async function getBalance() {
   try {
     if (!provider) await setMetaMask();
     const _provider = new ethers.BrowserProvider(provider);
-    const _singer = await _provider.getSigner();
-    const contract = new ethers.Contract(
-      FundMeDeployment.address,
-      FundMeDeployment.abi,
-      _singer,
-    );
     const contractBalance = await _provider.getBalance(
       FundMeDeployment.address,
     );
@@ -59,6 +58,8 @@ async function getBalance() {
     currentBalance.textContent = ethers.formatEther(contractBalance);
   } catch (error) {
     console.error(error);
+
+    alert(error);
   }
 }
 
