@@ -24,6 +24,7 @@ contract FundMe {
     AggregatorV3Interface private s_priceFeed;
 
     event FundSuccess(address funder, uint256 fundValue);
+    event WithdrawSuccess(uint256 withdrawnAmount);
 
     modifier onlyOwner() {
         // require(msg.sender == i_owner, "sender is not owner!");
@@ -54,6 +55,7 @@ contract FundMe {
             s_addressToAmountFunded[funder] = 0;
         }
         s_funders = new address[](0);
+        emit WithdrawSuccess(address(this).balance);
 
         (bool callSuccess, ) = i_owner.call{value: address(this).balance}("");
         if (!callSuccess) revert FundMe__WithdrawFailed();
