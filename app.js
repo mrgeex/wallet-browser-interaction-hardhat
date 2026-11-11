@@ -29,6 +29,17 @@ async function fund() {
     const tx = await contract.fund({
       value: ethers.parseEther(fundAmount.value.toString()),
     });
+    const txReceipt = await tx.wait(1);
+
+    for (const log of txReceipt.logs) {
+      const event = contract.interface.parseLog(log);
+
+      if (event?.name === "FundSuccess") {
+        console.log("funded!");
+        alert(`Successfully funded!`);
+        await getBalance();
+      }
+    }
   } catch (error) {
     console.error(error);
   }
